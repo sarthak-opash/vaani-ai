@@ -1,2 +1,9 @@
 py310/
 .env
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.wav
+faiss_index/
+audio/
