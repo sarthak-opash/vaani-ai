@@ -1,23 +1,64 @@
-Our business is a modern multi-service restaurant and hospitality provider located in the heart of the city. We specialize in delivering high-quality dining experiences, table reservations, home delivery, and event hosting services. The restaurant operates daily from 10:00 AM to 11:00 PM, including weekends and public holidays. Customers can visit us for breakfast, lunch, dinner, or casual meetings.
+Urban Spice Bistro & Rooftop Lounge - Business Knowledge Base
 
-We offer a diverse menu that includes Indian, Chinese, Italian, and Continental cuisines. Popular dishes include paneer butter masala, biryani, pasta alfredo, manchurian, and wood-fired pizzas. We also provide vegan and gluten-free options to cater to health-conscious customers. Our chefs use fresh ingredients and maintain high hygiene standards in food preparation.
+Business Overview: Urban Spice Bistro & Rooftop Lounge is a modern
+multi-service restaurant located in the heart of Surat, Gujarat, India.
+We provide dining, reservations, home delivery, and event hosting
+services. Our goal is to deliver high-quality food, excellent
+hospitality, and a seamless digital experience through our AI assistant
+and online platforms.
 
-Customers can book tables in advance through our AI assistant or website. The booking system allows users to select date, time, number of guests, and seating preferences such as indoor, outdoor, or rooftop dining. Confirmation is sent instantly via SMS or email. Walk-in customers are also welcome, but reservations are recommended during peak hours.
+Location: Ring Road Commercial Hub, City Center, Surat, Gujarat, India
 
-We provide home delivery services within a 10 km radius. Orders can be placed through the assistant, mobile app, or phone call. Delivery typically takes 30 to 45 minutes depending on location and traffic conditions. Customers can track their order status in real-time.
+Contact: Phone: +91-98765-43210 Email: support@urbanspicebistro.com
+Website: www.urbanspicebistro.com
 
-Our business also supports event bookings such as birthday parties, corporate meetings, and small celebrations. We provide customized decoration, catering packages, and seating arrangements based on customer requirements. Event bookings must be made at least 24 hours in advance.
+Operating Hours: Open Daily: 10:00 AM to 11:00 PM Breakfast: 10:00 AM –
+12:00 PM Lunch: 12:00 PM – 4:00 PM Evening Snacks: 4:00 PM – 7:00 PM
+Dinner: 7:00 PM – 11:00 PM
 
-Customer support is available throughout business hours. Users can ask about menu items, pricing, availability, or ongoing offers. Our AI assistant is trained to answer frequently asked questions and assist with bookings and orders. If needed, queries can be escalated to a human representative.
+Facilities: Indoor dining, Outdoor seating, Rooftop lounge, Private
+dining rooms, Free Wi-Fi, Wheelchair accessibility, Valet parking during
+peak hours, Family seating areas, Clean restrooms, Waiting lounge.
 
-We accept multiple payment methods including cash, credit/debit cards, UPI, and online wallets. All transactions are secure and encrypted. Customers can also apply discount coupons and promotional codes during checkout.
+Cuisine: Indian, Chinese, Italian, Continental, Fusion dishes.
 
-Our restaurant frequently offers special deals such as weekend discounts, combo meals, and festive offers. Loyalty programs are available for regular customers, allowing them to earn points on every purchase and redeem them later.
+Popular Dishes: Paneer Butter Masala, Biryani, Veg Manchurian, Pasta
+Alfredo, Wood-fired Pizza, Hakka Noodles, Tandoori Platter, Garlic
+Bread, Chocolate Lava Cake.
 
-Parking facilities are available near the restaurant, and valet parking is provided during peak hours. The restaurant is wheelchair accessible and designed to accommodate families, couples, and corporate groups.
+Healthy Options: Vegan meals, Gluten-free dishes, Low-calorie food,
+Fresh salads, Protein-rich meals.
 
-Hygiene and safety are our top priorities. All staff follow strict cleanliness protocols, and the kitchen is regularly sanitized. We comply with all local health regulations and ensure safe dining experiences for our customers.
+Table Reservations: Customers can book tables using the AI assistant,
+website, mobile app, or phone call. Required details include name, date,
+time, number of guests, and seating preference such as indoor, outdoor,
+or rooftop.
 
-For any assistance, customers can interact with our AI assistant to check availability, place orders, make bookings, or get recommendations. The assistant provides quick and accurate responses based on business data and user preferences.
+Home Delivery: Delivery available within a 10 km radius. Estimated
+delivery time: 30 to 45 minutes. Real-time order tracking and
+contactless delivery available.
 
-Our goal is to deliver excellent service, delicious food, and a seamless customer experience through both offline and digital platforms.
+Event Hosting: Birthday parties, Corporate meetings, Anniversaries,
+Small celebrations. Event bookings must be made at least 24 hours in
+advance.
+
+Payment Methods: Cash, Credit Cards, Debit Cards, UPI, Online Wallets,
+Net Banking. Supported apps include Google Pay, PhonePe, Paytm, and
+Amazon Pay.
+
+Loyalty Program: Customers earn reward points on every purchase and can
+redeem them for discounts and special offers.
+
+Offers: Weekend discounts, Combo meals, Festive deals, Happy hour
+specials, Corporate offers.
+
+Hygiene and Safety: Strict sanitation practices, fresh ingredients,
+trained staff, regular kitchen cleaning, and compliance with health
+regulations.
+
+Customer Support: Available during business hours through AI assistant,
+phone, email, and in-person support.
+
+Purpose for AI Assistant: This document is used to train the AI
+assistant to answer customer queries related to restaurant services,
+bookings, orders, menu, availability, and offers.
