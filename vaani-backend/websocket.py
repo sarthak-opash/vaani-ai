@@ -12,13 +12,35 @@ router = APIRouter()
 # In-memory call log storage
 call_logs = []
 
+GREETING_TEXT = "Hello there! How can I help you?"
+
 @router.websocket("/ws/voice")
 async def voice_chat(websocket: WebSocket):
     await websocket.accept()
 
+    # Send AI greeting immediately when call starts
+    try:
+        await websocket.send_text(json.dumps({
+            "type": "transcript",
+            "role": "ai",
+            "text": GREETING_TEXT,
+            "timestamp": datetime.now().isoformat()
+        }))
+
+        # Stream greeting TTS audio
+        for chunk in stream_tts(GREETING_TEXT):
+            await websocket.send_bytes(chunk)
+
+        await websocket.send_text(json.dumps({
+            "type": "audio_complete"
+        }))
+    except Exception as e:
+        print(f"Greeting error: {e}")
+
     while True:
         try:
             audio_bytes = await websocket.receive_bytes()
+            print(f"Received audio: {len(audio_bytes)} bytes")
 
             # 1. STT
             user_text = speech_to_text(audio_bytes)

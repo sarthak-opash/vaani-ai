@@ -44,11 +44,16 @@ function App() {
   const chatEndRef = useRef<HTMLDivElement | null>(null);
   const durationRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
+  const streamRef = useRef<MediaStream | null>(null);
+  const recordingCycleRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const micChunksRef = useRef<Blob[]>([]);
+  const isStoppingRef = useRef(false);
 
   // Auto-scroll chat to bottom
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
 
   // Fetch call logs
   const fetchCallLogs = useCallback(async () => {
@@ -72,8 +77,46 @@ function App() {
     }
   }, [isRecording, fetchCallLogs]);
 
+  // Helper: create and start a new MediaRecorder on the given stream
+  const createRecorder = (stream: MediaStream): MediaRecorder => {
+    const mimeType = MediaRecorder.isTypeSupported("audio/webm;codecs=opus")
+      ? "audio/webm;codecs=opus"
+      : "audio/webm";
+    const recorder = new MediaRecorder(stream, { mimeType });
+
+    // Collect chunks for this recording cycle
+    recorder.ondataavailable = (event) => {
+      if (event.data.size > 0) {
+        micChunksRef.current.push(event.data);
+      }
+    };
+
+    // When recorder stops, build a complete blob and send it
+    recorder.onstop = () => {
+      const ws = wsRef.current;
+      if (ws && ws.readyState === WebSocket.OPEN && micChunksRef.current.length > 0) {
+        const completeBlob = new Blob(micChunksRef.current, { type: recorder.mimeType });
+        // Only send if the blob has meaningful audio (more than just headers)
+        if (completeBlob.size > 100) {
+          ws.send(completeBlob);
+        }
+      }
+      micChunksRef.current = [];
+
+      // If not intentionally stopping, restart the recorder for the next cycle
+      if (!isStoppingRef.current && stream.active) {
+        const newRecorder = createRecorder(stream);
+        recorderRef.current = newRecorder;
+        newRecorder.start();
+      }
+    };
+
+    return recorder;
+  };
+
   const startRecording = async () => {
     setConnectionStatus("connecting");
+    isStoppingRef.current = false;
     const ws = new WebSocket("ws://localhost:8000/ws/voice");
     wsRef.current = ws;
 
@@ -86,12 +129,7 @@ function App() {
     };
 
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    // Explicitly use webm/opus format so backend receives consistent audio format
-    const mimeType = MediaRecorder.isTypeSupported("audio/webm;codecs=opus")
-      ? "audio/webm;codecs=opus"
-      : "audio/webm";
-    const recorder = new MediaRecorder(stream, { mimeType });
-    recorderRef.current = recorder;
+    streamRef.current = stream;
 
     ws.onmessage = (event) => {
       if (typeof event.data === "string") {
@@ -138,20 +176,20 @@ function App() {
       }
     };
 
-    recorder.ondataavailable = (event) => {
-      if (ws.readyState === WebSocket.OPEN) {
-        ws.send(event.data);
-        setMessages((prev) => {
-          // Only add "Listening..." if last message isn't already one
-          if (prev.length > 0 && prev[prev.length - 1].text === "🎤 Listening...") {
-            return prev;
-          }
-          return prev; // Don't auto-add listening message; transcripts come from backend
-        });
-      }
-    };
+    // Create the first recorder and start it
+    const recorder = createRecorder(stream);
+    recorderRef.current = recorder;
+    recorder.start();
 
-    recorder.start(2000);
+    // Every 3 seconds, stop the current recorder (triggering onstop which sends
+    // the complete blob and starts a new recorder)
+    recordingCycleRef.current = setInterval(() => {
+      const currentRecorder = recorderRef.current;
+      if (currentRecorder && currentRecorder.state === "recording") {
+        currentRecorder.stop();
+      }
+    }, 3000);
+
     setIsRecording(true);
     setCallDuration(0);
     durationRef.current = setInterval(() => {
@@ -160,9 +198,28 @@ function App() {
   };
 
   const stopRecording = () => {
-    recorderRef.current?.stop();
-    recorderRef.current?.stream.getTracks().forEach((track) => track.stop());
-    wsRef.current?.close();
+    isStoppingRef.current = true;
+
+    // Stop the recording cycle timer
+    if (recordingCycleRef.current) {
+      clearInterval(recordingCycleRef.current);
+      recordingCycleRef.current = null;
+    }
+
+    // Stop the current recorder (which will send the last chunk via onstop)
+    if (recorderRef.current && recorderRef.current.state === "recording") {
+      recorderRef.current.stop();
+    }
+
+    // Stop all media tracks
+    streamRef.current?.getTracks().forEach((track) => track.stop());
+    streamRef.current = null;
+
+    // Give a short delay so the last audio chunk is sent before closing WS
+    setTimeout(() => {
+      wsRef.current?.close();
+    }, 500);
+
     setIsRecording(false);
     setIsAiSpeaking(false);
     if (durationRef.current) {
