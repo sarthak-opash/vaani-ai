@@ -28,6 +28,7 @@ interface CallLog {
   timestamp: string;
 }
 
+
 function App() {
   const [isRecording, setIsRecording] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -38,6 +39,7 @@ function App() {
   >("disconnected");
   const [callDuration, setCallDuration] = useState(0);
   const [isAiSpeaking, setIsAiSpeaking] = useState(false);
+  const [audioError, setAudioError] = useState<string | null>(null);
 
   const wsRef = useRef<WebSocket | null>(null);
   const recorderRef = useRef<MediaRecorder | null>(null);
@@ -92,14 +94,26 @@ function App() {
     };
 
     // When recorder stops, build a complete blob and send it
+
     recorder.onstop = () => {
       const ws = wsRef.current;
       if (ws && ws.readyState === WebSocket.OPEN && micChunksRef.current.length > 0) {
         const completeBlob = new Blob(micChunksRef.current, { type: recorder.mimeType });
+        // Log the blob size for debugging
+        console.log("Audio blob size:", completeBlob.size, "chunks:", micChunksRef.current.length);
         // Only send if the blob has meaningful audio (more than just headers)
         if (completeBlob.size > 100) {
+          console.log("Sending audio blob to backend");
           ws.send(completeBlob);
+        } else {
+          console.warn("Audio blob too small, not sending.");
         }
+      } else {
+        console.warn("WebSocket not ready or no chunks to send", {
+          ws: !!ws,
+          readyState: ws?.readyState,
+          chunks: micChunksRef.current.length
+        });
       }
       micChunksRef.current = [];
 
@@ -114,21 +128,43 @@ function App() {
     return recorder;
   };
 
+
   const startRecording = async () => {
     setConnectionStatus("connecting");
     isStoppingRef.current = false;
+    setAudioError(null);
+    let stream: MediaStream | null = null;
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      if (!stream || stream.getAudioTracks().length === 0) {
+        setAudioError("No audio input device found. Please check your microphone.");
+        setConnectionStatus("disconnected");
+        return;
+      }
+    } catch (err: any) {
+      setAudioError("Microphone access denied or unavailable. Please allow microphone access and try again.");
+      setConnectionStatus("disconnected");
+      return;
+    }
+
     const ws = new WebSocket("ws://localhost:8000/ws/voice");
     wsRef.current = ws;
 
     ws.onopen = () => {
+      console.log("WebSocket connected");
       setConnectionStatus("connected");
     };
 
     ws.onclose = () => {
+      console.log("WebSocket disconnected");
       setConnectionStatus("disconnected");
     };
 
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    ws.onerror = (error) => {
+      console.error("WebSocket error:", error);
+      setConnectionStatus("disconnected");
+    };
+
     streamRef.current = stream;
 
     ws.onmessage = (event) => {
@@ -188,13 +224,13 @@ function App() {
       if (currentRecorder && currentRecorder.state === "recording") {
         currentRecorder.stop();
       }
-    }, 3000);
+    }, 7000);
 
     setIsRecording(true);
     setCallDuration(0);
     durationRef.current = setInterval(() => {
       setCallDuration((prev) => prev + 1);
-    }, 1000);
+    }, 3000);
   };
 
   const stopRecording = () => {
@@ -249,6 +285,12 @@ function App() {
 
   return (
     <div className="h-screen w-screen flex font-[Inter,sans-serif] relative overflow-hidden">
+      {/* Audio Error Message */}
+      {audioError && (
+        <div className="fixed top-4 left-1/2 z-50 -translate-x-1/2 bg-red-600 text-white px-6 py-3 rounded-xl shadow-lg animate-fade-in-up">
+          <span>{audioError}</span>
+        </div>
+      )}
       {/* Background Effects */}
       <div className="noise-overlay" />
       <div className="fixed inset-0 z-0">

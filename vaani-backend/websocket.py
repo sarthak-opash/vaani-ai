@@ -1,11 +1,11 @@
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect
-from fastapi.responses import JSONResponse
-from services.stt import speech_to_text
-from services.rag import get_context
-from services.llm import generate_response
-from services.tts import stream_tts
 import json
 from datetime import datetime
+from services.tts import stream_tts
+from services.rag import get_context
+from services.stt import speech_to_text
+from fastapi.responses import JSONResponse
+from services.llm import generate_response
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
 router = APIRouter()
 
@@ -39,15 +39,21 @@ async def voice_chat(websocket: WebSocket):
 
     while True:
         try:
+            print("Waiting for audio bytes...")
             audio_bytes = await websocket.receive_bytes()
             print(f"Received audio: {len(audio_bytes)} bytes")
 
+            if len(audio_bytes) == 0:
+                print("Received empty audio bytes, skipping")
+                continue
+
             # 1. STT
             user_text = speech_to_text(audio_bytes)
-            print("User:", user_text)
+            print("User:", repr(user_text))
 
             # Skip empty or failed transcriptions
             if not user_text or user_text == "[Could not transcribe audio]":
+                print("Skipping empty or failed transcription")
                 continue
 
             # Send user's transcribed text as JSON

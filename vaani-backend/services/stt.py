@@ -1,12 +1,12 @@
+import os
 import whisper
 import tempfile
-import os
 
 model = whisper.load_model("base")
 
 def speech_to_text(audio_bytes):
     # Validate audio size - too small means no real audio content
-    if len(audio_bytes) < 1000:
+    if len(audio_bytes) < 100:
         print(f"STT: Audio too small ({len(audio_bytes)} bytes), skipping")
         return ""
 
@@ -17,10 +17,10 @@ def speech_to_text(audio_bytes):
         path = f.name
 
     try:
-        print(f"STT: Processing audio file ({len(audio_bytes)} bytes)")
+        print(f"STT: Processing audio file ({len(audio_bytes)} bytes) at {path}")
         result = model.transcribe(path, fp16=False)
         text = result["text"].strip()
-        print(f"STT: Transcribed -> '{text}'")
+        print(f"STT: Transcribed -> '{text}' (length: {len(text)})")
         return text
     except Exception as e:
         print(f"STT Error: {e}")
@@ -31,5 +31,6 @@ def speech_to_text(audio_bytes):
         # Clean up temp file
         try:
             os.unlink(path)
+            print(f"STT: Cleaned up temp file {path}")
         except OSError:
             pass
