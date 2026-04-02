@@ -1,31 +1,59 @@
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect
-from fastapi.responses import JSONResponse
-from services.stt import speech_to_text
-from services.rag import get_context
-from services.llm import generate_response
-from services.tts import stream_tts
 import json
 from datetime import datetime
+from services.tts import stream_tts
+from services.rag import get_context
+from services.stt import speech_to_text
+from fastapi.responses import JSONResponse
+from services.llm import generate_response
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
 router = APIRouter()
 
 # In-memory call log storage
 call_logs = []
 
+GREETING_TEXT = "Hello there! How can I help you?"
+
 @router.websocket("/ws/voice")
 async def voice_chat(websocket: WebSocket):
     await websocket.accept()
 
+    # Send AI greeting immediately when call starts
+    try:
+        await websocket.send_text(json.dumps({
+            "type": "transcript",
+            "role": "ai",
+            "text": GREETING_TEXT,
+            "timestamp": datetime.now().isoformat()
+        }))
+
+        # Stream greeting TTS audio
+        for chunk in stream_tts(GREETING_TEXT):
+            await websocket.send_bytes(chunk)
+
+        await websocket.send_text(json.dumps({
+            "type": "audio_complete"
+        }))
+    except Exception as e:
+        print(f"Greeting error: {e}")
+
     while True:
         try:
+            print("Waiting for audio bytes...")
             audio_bytes = await websocket.receive_bytes()
+            print(f"Received audio: {len(audio_bytes)} bytes")
+
+            if len(audio_bytes) == 0:
+                print("Received empty audio bytes, skipping")
+                continue
 
             # 1. STT
             user_text = speech_to_text(audio_bytes)
-            print("User:", user_text)
+            print("User:", repr(user_text))
 
             # Skip empty or failed transcriptions
             if not user_text or user_text == "[Could not transcribe audio]":
+                print("Skipping empty or failed transcription")
                 continue
 
             # Send user's transcribed text as JSON

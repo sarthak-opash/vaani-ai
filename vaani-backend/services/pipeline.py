@@ -1,7 +1,7 @@
-from services.stt import speech_to_text
-from services.rag import get_context
-from services.llm import generate_response
 from services.tts import stream_tts
+from services.rag import get_context
+from services.stt import speech_to_text
+from services.llm import generate_response
 
 async def process_pipeline(audio_bytes):
 
