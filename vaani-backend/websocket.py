@@ -1,11 +1,17 @@
 import json
+import base64
 from datetime import datetime
+from pydantic import BaseModel
 from services.tts import stream_tts
 from services.rag import get_context
 from services.stt import speech_to_text
-from fastapi.responses import JSONResponse
 from services.llm import generate_response
+from fastapi.responses import JSONResponse
+from services.memory import ConversationMemory
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
+
+class ChatMessage(BaseModel):
+    message: str
 
 router = APIRouter()
 
@@ -17,6 +23,9 @@ GREETING_TEXT = "Hello there! How can I help you?"
 @router.websocket("/ws/voice")
 async def voice_chat(websocket: WebSocket):
     await websocket.accept()
+    
+    # Initialize conversation memory for this session
+    memory = ConversationMemory()
 
     # Send AI greeting immediately when call starts
     try:
@@ -67,9 +76,16 @@ async def voice_chat(websocket: WebSocket):
             # 2. RAG
             context = get_context(user_text)
 
-            # 3. LLM
-            ai_response = generate_response(user_text, context)
+            # Get conversation memory context
+            memory_context = memory.get_context_string()
+
+            # 3. LLM - Pass both RAG context and conversation memory
+            ai_response = generate_response(user_text, context, memory_context)
             print("AI:", ai_response)
+
+            # Store in conversation memory
+            memory.add_message("user", user_text)
+            memory.add_message("ai", ai_response)
 
             # Send AI response text as JSON
             await websocket.send_text(json.dumps({
@@ -108,3 +124,95 @@ async def voice_chat(websocket: WebSocket):
 @router.get("/api/call-logs")
 async def get_call_logs():
     return JSONResponse(content={"logs": list(reversed(call_logs))})
+
+@router.post("/api/chat")
+async def text_chat(chat_message: ChatMessage):
+    """Handle text-based chat messages"""
+    try:
+        # Initialize memory
+        memory = ConversationMemory()
+        
+        message = chat_message.message.strip()
+        
+        if not message:
+            return JSONResponse(
+                status_code=400,
+                content={"error": "Message cannot be empty"}
+            )
+
+        print(f"Received text message: {message}")
+
+        # 1. RAG - Get context
+        try:
+            context = get_context(message)
+            print(f"Context retrieved: {len(context) if context else 0} characters")
+        except Exception as rag_error:
+            print(f"RAG Error: {rag_error}")
+            context = ""
+
+        # Get conversation memory context
+        memory_context = memory.get_context_string()
+
+        # 2. LLM - Generate response with memory
+        try:
+            ai_response = generate_response(message, context, memory_context)
+            print(f"AI Response: {ai_response}")
+        except Exception as llm_error:
+            print(f"LLM Error: {llm_error}")
+            import traceback
+            traceback.print_exc()
+            return JSONResponse(
+                status_code=500,
+                content={"error": f"Failed to generate response: {str(llm_error)}"}
+            )
+
+        # Store in conversation memory
+        memory.add_message("user", message)
+        memory.add_message("ai", ai_response)
+
+        # 3. TTS - Generate audio
+        audio_url = None
+        try:
+            audio_chunks = []
+            for chunk in stream_tts(ai_response):
+                if chunk:
+                    audio_chunks.append(chunk)
+
+            # If we have audio chunks, create a base64 string to return as URL
+            if audio_chunks:
+                audio_blob = b"".join(audio_chunks)
+                audio_b64 = base64.b64encode(audio_blob).decode()
+                audio_url = f"data:audio/wav;base64,{audio_b64}"
+                print(f"Audio generated: {len(audio_blob)} bytes")
+        except Exception as tts_error:
+            print(f"TTS Error (non-fatal): {tts_error}")
+            # Don't fail if TTS fails, still return the text response
+
+        # Store in call logs
+        try:
+            call_logs.append({
+                "id": len(call_logs) + 1,
+                "user_text": message,
+                "ai_response": ai_response,
+                "timestamp": datetime.now().isoformat()
+            })
+        except Exception as log_error:
+            print(f"Log storage error (non-fatal): {log_error}")
+
+        return JSONResponse(
+            status_code=200,
+            content={
+                "ai_response": ai_response,
+                "audio_url": audio_url,
+                "timestamp": datetime.now().isoformat()
+            }
+        )
+
+    except Exception as e:
+        print(f"Error processing text chat: {e}")
+        import traceback
+        traceback.print_exc()
+        return JSONResponse(
+            status_code=500,
+            content={"error": str(e)}
+        )

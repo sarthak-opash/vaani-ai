@@ -1,0 +1,62 @@
+[
+  {
+    "role": "user",
+    "text": "hello",
+    "timestamp": "2026-04-13T11:29:00.353707"
+  },
+  {
+    "role": "ai",
+    "text": "Hello, how can I assist you today?",
+    "timestamp": "2026-04-13T11:29:00.353707"
+  },
+  {
+    "role": "user",
+    "text": "i want to buy motor insurance",
+    "timestamp": "2026-04-13T11:29:17.834179"
+  },
+  {
+    "role": "ai",
+    "text": "To buy motor insurance, you can visit our website or mobile app. Compare different plans, choose coverage that suits you, and purchase online. Our team will guide you through the process.",
+    "timestamp": "2026-04-13T11:29:17.835178"
+  },
+  {
+    "role": "user",
+    "text": "can i buy this from here",
+    "timestamp": "2026-04-13T11:29:39.644408"
+  },
+  {
+    "role": "ai",
+    "text": "You're referring to motor insurance. Yes, you can buy motor insurance from our platform. Visit our website or mobile app to compare plans, choose coverage, and purchase online.",
+    "timestamp": "2026-04-13T11:29:39.645374"
+  },
+  {
+    "role": "user",
+    "text": "can you give me detail of plans for motor insurance",
+    "timestamp": "2026-04-13T11:30:04.709782"
+  },
+  {
+    "role": "ai",
+    "text": "Sorry, I don\u2019t have that information. However, I can tell you that our motor insurance plans cover damage, theft, and third-party liability. You can visit our website or mobile app to compare different plans, choose coverage that suits you, and purchase online.",
+    "timestamp": "2026-04-13T11:30:04.710790"
+  },
+  {
+    "role": "user",
+    "text": "what about health insuranmce",
+    "timestamp": "2026-04-13T11:30:42.893323"
+  },
+  {
+    "role": "ai",
+    "text": "To answer your question about health insurance, I need to clarify that our previous conversation was about motor insurance. However, I can provide you with information about health insurance.\n\nHealth insurance plans at Esanad cover medical expenses, hospitalization, and some preventive care. Our network includes top hospitals and medical centers in UAE. Co-pay and deductibles may apply, depending on the plan you choose. You can visit our website or mobile app to compare different health insurance plans and purchase online.",
+    "timestamp": "2026-04-13T11:30:42.894286"
+  },
+  {
+    "role": "user",
+    "text": "give me your mail id for communication",
+    "timestamp": "2026-04-13T11:32:12.140682"
+  },
+  {
+    "role": "ai",
+    "text": "Sorry, I don\u2019t have that information.",
+    "timestamp": "2026-04-13T11:32:12.141688"
+  }
+]
