@@ -719,40 +719,73 @@ function App() {
 
           {(isCallActive || isConnecting) && (
             <div className="voice-overlay">
-              <StatusPill status={aiStatus} />
-              <AISphere
-                status={aiStatus}
-                audioLevels={levels}
-                averageLevel={averageLevel}
-                voiceDetected={voiceDetected}
-                isMicActive={isMicActive}
-              />
-              {!isConnecting && (
-                <>
-                  <p className="voice-duration">{formatDuration(callDuration)}</p>
-                  <p className="voice-hint">
-                    Tap the microphone to speak, tap again to send
-                  </p>
-                  <button
-                    type="button"
-                    className={`input-btn input-btn--mic voice-overlay-mic ${isRecording ? "input-btn--mic-active" : ""}`}
-                    onClick={toggleRecording}
-                    disabled={loading && !isRecording}
-                    title={isRecording ? "Stop and send" : "Start speaking"}
-                    aria-pressed={isRecording}
-                  >
-                    {isRecording ? (
-                      <MicOff size={22} strokeWidth={1.75} />
-                    ) : (
-                      <Mic size={22} strokeWidth={1.75} />
+              {/* Chat messages area during call */}
+              <div className="voice-chat-scroll">
+                {currentMessages && currentMessages.length > 0 && (
+                  <div className="voice-chat-messages">
+                    {currentMessages.map((msg, i) => (
+                      <div
+                        key={`${msg.timestamp}-${i}`}
+                        className={`chat-bubble chat-bubble--${msg.role} chat-bubble--compact`}
+                      >
+                        {msg.text}
+                        <span className="chat-bubble-time">
+                          {new Date(msg.timestamp).toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </span>
+                      </div>
+                    ))}
+                    {loading && (
+                      <div className="chat-thinking" aria-label="Thinking">
+                        <span />
+                        <span />
+                        <span />
+                      </div>
                     )}
-                  </button>
-                </>
-              )}
-              <button type="button" className="btn-end-call" onClick={endCall}>
-                <PhoneOff size={18} strokeWidth={1.75} />
-                End session
-              </button>
+                    <div ref={messagesEndRef} />
+                  </div>
+                )}
+              </div>
+
+              {/* Animation and controls */}
+              <div className="voice-overlay-content">
+                <StatusPill status={aiStatus} />
+                <AISphere
+                  status={aiStatus}
+                  audioLevels={levels}
+                  averageLevel={averageLevel}
+                  voiceDetected={voiceDetected}
+                  isMicActive={isMicActive}
+                />
+                {!isConnecting && (
+                  <>
+                    <p className="voice-duration">{formatDuration(callDuration)}</p>
+                    <p className="voice-hint">
+                      Tap the microphone to speak, tap again to send
+                    </p>
+                    <button
+                      type="button"
+                      className={`input-btn input-btn--mic voice-overlay-mic ${isRecording ? "input-btn--mic-active" : ""}`}
+                      onClick={toggleRecording}
+                      disabled={loading && !isRecording}
+                      title={isRecording ? "Stop and send" : "Start speaking"}
+                      aria-pressed={isRecording}
+                    >
+                      {isRecording ? (
+                        <MicOff size={22} strokeWidth={1.75} />
+                      ) : (
+                        <Mic size={22} strokeWidth={1.75} />
+                      )}
+                    </button>
+                  </>
+                )}
+                <button type="button" className="btn-end-call" onClick={endCall}>
+                  <PhoneOff size={18} strokeWidth={1.75} />
+                  End session
+                </button>
+              </div>
             </div>
           )}
         </div>

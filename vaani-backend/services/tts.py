@@ -40,7 +40,7 @@ def stream_tts(text, fast: bool = False):
         for chunk in client.text_to_speech.tts(
             text=spoken,
             language="en-us",
-            voice_id=147342,
+            voice_id=170650,
             speech_model=FAST_SPEECH_MODEL,
             output_configuration=StreamTtsOutputConfiguration(format="wav"),
         ):

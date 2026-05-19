@@ -16,3 +16,5 @@ google-generativeai==0.8.3
 camb-sdk
 numpy==1.24.3
 scipy==1.11.3
+requests==2.31.0
+groq==0.4.1
