@@ -1,12 +1,18 @@
 import os
+import sys
 import json
 import time
 import hashlib
-from groq import Groq
-from typing import Optional, Dict, Tuple, List
-from dotenv import load_dotenv
-from enum import Enum
 import requests
+
+# Ensure Windows console supports UTF-8 characters
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+# pyrefly: ignore [missing-import]
+from groq import Groq
+from enum import Enum
+from dotenv import load_dotenv
+from typing import Optional, Dict, Tuple, List
 
 load_dotenv()
 
@@ -302,7 +308,7 @@ RESPONSE:"""
     try:
         # Fast inference with optimized parameters
         response = client.chat.completions.create(
-            model="llama-3.1-8b-instant",
+            model="llama-3.3-70b-versatile",
             messages=[
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": prompt}

@@ -1,6 +1,8 @@
 import json
 import base64
+import uuid
 from datetime import datetime
+from typing import Optional
 from pydantic import BaseModel
 from services.tts import stream_tts
 from services.rag import get_context
@@ -12,6 +14,7 @@ from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
 class ChatMessage(BaseModel):
     message: str
+    session_id: Optional[str] = None
 
 router = APIRouter()
 
@@ -28,7 +31,10 @@ async def voice_chat(websocket: WebSocket):
     should_greet = websocket.query_params.get("greet", "1") != "0"
 
     # Initialize conversation memory for this session
-    memory = ConversationMemory()
+    session_id = websocket.query_params.get("session_id")
+    if not session_id:
+        session_id = f"voice_{str(uuid.uuid4())[:8]}"
+    memory = ConversationMemory(session_id)
 
     if should_greet:
         try:
@@ -92,7 +98,7 @@ async def voice_chat(websocket: WebSocket):
                 "role": "user",
                 "text": user_text,
                 "timestamp": datetime.now().isoformat()
-            }))
+                  }))
 
             # 2. RAG
             context = get_context(user_text)
@@ -150,8 +156,9 @@ async def get_call_logs():
 async def text_chat(chat_message: ChatMessage):
     """Handle text-based chat messages"""
     try:
+        session_id = chat_message.session_id or "default_text_session"
         # Initialize memory
-        memory = ConversationMemory()
+        memory = ConversationMemory(session_id)
         
         message = chat_message.message.strip()
         

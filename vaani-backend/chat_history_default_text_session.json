@@ -1,0 +1,62 @@
+[
+  {
+    "role": "user",
+    "text": "hello there",
+    "timestamp": "2026-05-26T11:23:46.184114"
+  },
+  {
+    "role": "ai",
+    "text": "Hello, I'm Vaani, your insurance assistant. How can I help you today?",
+    "timestamp": "2026-05-26T11:23:46.185106"
+  },
+  {
+    "role": "user",
+    "text": "hello there i want to buy motor insurance",
+    "timestamp": "2026-05-26T11:26:36.179659"
+  },
+  {
+    "role": "ai",
+    "text": "I'm Vaani, your insurance assistant. I can help you compare motor insurance plans from 35+ top UAE companies.",
+    "timestamp": "2026-05-26T11:26:36.180657"
+  },
+  {
+    "role": "user",
+    "text": "hello there i want to buy motor insurance",
+    "timestamp": "2026-05-26T11:28:09.610825"
+  },
+  {
+    "role": "ai",
+    "text": "I'm Vaani, your insurance assistant. I can help you compare motor insurance plans from 35+ top UAE companies.",
+    "timestamp": "2026-05-26T11:28:09.611819"
+  },
+  {
+    "role": "user",
+    "text": "comprehensive motor insurance",
+    "timestamp": "2026-05-26T11:28:28.352266"
+  },
+  {
+    "role": "ai",
+    "text": "I'm showing you comprehensive motor insurance plans from 35 top UAE companies. Let me guide you through the options.",
+    "timestamp": "2026-05-26T11:28:28.353266"
+  },
+  {
+    "role": "user",
+    "text": "give me list of the company",
+    "timestamp": "2026-05-26T11:28:41.516617"
+  },
+  {
+    "role": "ai",
+    "text": "I'm showing you Esanad Insurance, a top UAE company. Let me guide you through their plans.",
+    "timestamp": "2026-05-26T11:28:41.517614"
+  },
+  {
+    "role": "user",
+    "text": "i want to bu health insurance",
+    "timestamp": "2026-05-26T11:31:33.534952"
+  },
+  {
+    "role": "ai",
+    "text": "I'm helping you find health insurance plans, mandatory in Dubai and Abu Dhabi. Let me guide you through our options.",
+    "timestamp": "2026-05-26T11:31:33.535924"
+  }
+]

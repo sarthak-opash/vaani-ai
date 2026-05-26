@@ -1,62 +1,62 @@
 [
   {
     "role": "user",
-    "text": "I want to buy water insurance.",
-    "timestamp": "2026-05-19T12:11:51.996464"
+    "text": "give me price for the insurance chinese car",
+    "timestamp": "2026-05-20T10:32:14.904865"
   },
   {
     "role": "ai",
-    "text": "I'd be happy to help you with water insurance, Sartha. Our Office Insurance UAE 2026 plan offers protection against water damage, including burst pipes, overflow, and storm ingress, starting at AED 499.",
-    "timestamp": "2026-05-19T12:11:51.997461"
+    "text": "Our Chinese Car Insurance starts from 622 AED for Third-Party Liability and 1,700 AED for Comprehensive coverage.",
+    "timestamp": "2026-05-20T10:32:14.907967"
   },
   {
     "role": "user",
-    "text": "I want to buy motor insurance for my car.",
-    "timestamp": "2026-05-19T12:12:19.457255"
+    "text": "what are the provider arew there",
+    "timestamp": "2026-05-20T10:32:34.668104"
   },
   {
     "role": "ai",
-    "text": "I'd be happy to help you with motor insurance, Sartha. We have various car insurance options, including motor insurance UAE, starting at AED 250 per year for a basic plan.",
-    "timestamp": "2026-05-19T12:12:19.458250"
+    "text": "We have partnered with multiple insurance providers to offer you a wide range of options. Our Universal Insurer Integration Module connects conventional insurers without direct APIs, providing more real-time choices than any other UAE platform.",
+    "timestamp": "2026-05-20T10:32:34.669099"
   },
   {
     "role": "user",
-    "text": "4th and 3rd different provided for motor insurance.",
-    "timestamp": "2026-05-19T12:12:51.224478"
+    "text": "give me names",
+    "timestamp": "2026-05-20T10:32:58.569631"
   },
   {
     "role": "ai",
-    "text": "Our motor insurance plans start at AED 250 per year for a basic plan. We also have a third-party plan, which is cheaper, but I'd be happy to explain the difference between the two, Sartha.",
-    "timestamp": "2026-05-19T12:12:51.224478"
+    "text": "I don't have that information. Let me find it for you.",
+    "timestamp": "2026-05-20T10:32:58.570604"
   },
   {
     "role": "user",
-    "text": "Who are the provider company of Water Insurance? I want list of them like my TAC TAC of Insurance and all.",
-    "timestamp": "2026-05-19T12:13:28.737686"
+    "text": "give me name of insurance provider",
+    "timestamp": "2026-05-20T10:33:19.610065"
   },
   {
     "role": "ai",
-    "text": "I don't have that information. Let me find it for you. Our water insurance options include protection against water damage, but I'll need to check on the provider companies for you, Sartha.",
-    "timestamp": "2026-05-19T12:13:28.738683"
+    "text": "We have partnered with multiple insurance providers to offer you a wide range of options. Let me find the names for you.",
+    "timestamp": "2026-05-20T10:33:19.612060"
   },
   {
     "role": "user",
-    "text": "who are the provider company for motor insurance at T-SANAD.",
-    "timestamp": "2026-05-19T12:14:01.436640"
+    "text": "find the name give le list of the same",
+    "timestamp": "2026-05-20T10:33:46.831812"
   },
   {
     "role": "ai",
-    "text": "I'd be happy to help you with motor insurance providers, Sartha. Our motor insurance options are provided by AXA, Zurich, and Allianz, among others, but I'd be happy to give you a more detailed list, let me check for you.",
-    "timestamp": "2026-05-19T12:14:01.437635"
+    "text": "I can find the list of insurance providers for you. Here are some of the names: \nQatar Insurance Company Q.S.P.C. (UAE Branch), Mediterranean & Gulf Insurance and Reinsurance Company, ADNIC, Aetna International, Sukoon Health Insurance.",
+    "timestamp": "2026-05-20T10:33:46.832784"
   },
   {
     "role": "user",
-    "text": "I used Aisin Al FO",
-    "timestamp": "2026-05-19T12:14:34.576096"
+    "text": "give me for motir insurance",
+    "timestamp": "2026-05-20T10:34:15.446802"
   },
   {
     "role": "ai",
-    "text": "I'm not sure what you're referring to with \"Aisin Al FO\". Can you please provide more context or clarify what you're asking about?",
-    "timestamp": "2026-05-19T12:14:34.579094"
+    "text": "Our Motor Insurance starts from 622 AED for Third-Party Liability and 1,282 AED for Comprehensive coverage, depending on your vehicle type.",
+    "timestamp": "2026-05-20T10:34:15.447801"
   }
 ]

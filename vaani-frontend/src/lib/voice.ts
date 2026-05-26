@@ -2,7 +2,7 @@ export const VOICE_WS_URL =
   import.meta.env.VITE_VOICE_WS_URL ?? "ws://localhost:8000/ws/voice";
 
 /** Faster AI voice playback in the browser (1.0 = normal). */
-export const TTS_PLAYBACK_RATE = 1.32;
+export const TTS_PLAYBACK_RATE = 1.0;
 
 const GREETED_SESSION_KEY = "vaani_greeted";
 

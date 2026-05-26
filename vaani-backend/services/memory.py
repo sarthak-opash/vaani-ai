@@ -7,17 +7,23 @@ CHAT_HISTORY_FILE = "chat_history.json"
 MAX_MEMORY_TURNS = 10  # Keep last 10 turns for context window
 
 class ConversationMemory:
-    """Manages conversation history with file persistence"""
+    """Manages conversation history with file persistence per specific session/chat"""
     
-    def __init__(self):
+    def __init__(self, session_id: str = "global"):
+        self.session_id = session_id
+        # Sanitize session_id to be a safe filename
+        safe_id = "".join([c for c in session_id if c.isalnum() or c in ("-", "_")]).strip()
+        if not safe_id:
+            safe_id = "global"
+        self.history_file = f"chat_history_{safe_id}.json"
         self.history: List[Dict] = []
         self.load_history()
     
     def load_history(self):
         """Load chat history from file"""
-        if os.path.exists(CHAT_HISTORY_FILE):
+        if os.path.exists(self.history_file):
             try:
-                with open(CHAT_HISTORY_FILE, "r") as f:
+                with open(self.history_file, "r") as f:
                     data = json.load(f)
                     if isinstance(data, list):
                         # Filter out invalid messages and keep last N turns
@@ -47,7 +53,7 @@ class ConversationMemory:
     def save_history(self):
         """Save chat history to file"""
         try:
-            with open(CHAT_HISTORY_FILE, "w") as f:
+            with open(self.history_file, "w") as f:
                 json.dump(self.history, f, indent=2)
         except Exception as e:
             print(f"Error saving chat history: {e}")
@@ -79,6 +85,6 @@ class ConversationMemory:
         """Clear all history"""
         self.history = []
         try:
-            os.remove(CHAT_HISTORY_FILE)
+            os.remove(self.history_file)
         except:
             pass

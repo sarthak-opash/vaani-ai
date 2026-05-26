@@ -1,0 +1,12 @@
+[
+  {
+    "role": "user",
+    "text": "Hey there, how can you help me?",
+    "timestamp": "2026-05-26T11:12:56.010635"
+  },
+  {
+    "role": "ai",
+    "text": "I'm Vaani, Esanad Insurance UAE's advanced voice assistant. I can help you with insurance-related queries, provide information on our services, and direct you to relevant resources, including our eSanad blog.",
+    "timestamp": "2026-05-26T11:12:56.010635"
+  }
+]
